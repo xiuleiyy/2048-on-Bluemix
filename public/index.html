@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>2048</title>
+
+  <link href="style/main.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
+  <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone 5+ -->
+  <link rel="apple-touch-startup-image" href="meta/apple-touch-startup-image-640x920.png"  media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)"> <!-- iPhone, retina -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div class="wrap">
+    <div class="container">
+      <div class="heading">
+        <h1 class="title">2048</h1>
+        <div class="scores-container">
+          <div class="score-container">0</div>
+          <div class="best-container">0</div>
+        </div>
+      </div>
+
+      <div class="above-game">
+        <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
+        <a class="restart-button">New Game</a>
+        <div class="player">- - -</div>
+      </div>
+
+      <div class="game-container">
+        <div class="game-message">
+          <p></p>
+          <div class="lower">
+  	        <a class="keep-playing-button">Keep going</a>
+            <a class="retry-button">Try again</a>
+          </div>
+        </div>
+
+        <div class="game-start">
+          <p>
+            <input type="text" class="name" placeholder="input your name"></input>
+            <a class="new-button">New Game</a>
+          </p>
+        </div>
+
+        <div class="grid-container">
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+          </div>
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+          </div>
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+          </div>
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+          </div>
+        </div>
+
+        <div class="tile-container">
+
+        </div>
+      </div>
+
+      <p class="game-explanation">
+        <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+      </p>
+      <hr>
+      <p>
+      <strong class="important">Note:</strong> 本游戏修改自 Github 上一款很火的游戏：<a href="https://github.com/gabrielecirulli/2048" target="_blank">2048</a>，并添加了 <a href="http://nodejs.org" target="_blank">NodeJS</a> 后端 API（<a href="http://coding.net/u/demo/p/node-2048" target="_blank">源码</a>），用来展示 <a href="http://coding.net" target="_blank">Coding</a> 的演示平台功能。
+      <hr>
+      <p>
+      Created by <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli.</a> Based on <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">1024 by Veewo Studio</a> and conceptually similar to <a href="http://asherv.com/threes/" target="_blank">Threes by Asher Vollmer.</a>
+      </p>
+    </div>
+    <div class="hiscore">
+      <h1 class="header">TOP 10</h1>
+      <ol>
+        <li class='no-data'>No data yet :)</li>
+      </ol>
+    </div>
+  </div>
+
+  <script src="js/zepto.js"></script>
+  <script src="js/bind_polyfill.js"></script>
+  <script src="js/classlist_polyfill.js"></script>
+  <script src="js/animframe_polyfill.js"></script>
+  <script src="js/keyboard_input_manager.js"></script>
+  <script src="js/html_actuator.js"></script>
+  <script src="js/grid.js"></script>
+  <script src="js/tile.js"></script>
+  <script src="js/local_storage_manager.js"></script>
+  <script src="js/game_manager.js"></script>
+  <script src="js/application.js"></script>
+
+  <style type="text/css">
+    .wrap {
+      width: 800px;
+      margin: auto;
+    }
+
+    .wrap .container {
+      margin: 0;
+      float: left;
+    }
+
+    .wrap .hiscore {
+      width: 240px;
+      padding: 10px;
+      float: right;
+    }
+
+    .wrap .hiscore .header {
+      border-bottom: 1px solid #eee;
+      margin-top: 0;
+    }
+
+    .wrap .hiscore ol li {
+      font-weight: bold;
+      line-height: 40px;
+      padding: 0 5px;
+    }
+
+    .wrap .hiscore ol li .player {
+      font-weight: normal;
+      color: #666;
+    }
+
+    .wrap .hiscore ol li .score {
+      float: right;
+      font-weight: normal;
+      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    }
+
+    .wrap .hiscore ol li:first-child .score {
+      font-size: 24px;
+      font-style: italic;
+      color: red;
+    }
+
+    .wrap .hiscore ol li:nth-child(2) .score {
+      font-size: 20px;
+      font-style: italic;
+      color: #f67c5f;
+    }
+
+    .wrap .hiscore ol li:nth-child(3) .score {
+      font-size: 20px;
+      font-style: italic;
+      color: #f59563;
+    }
+
+    .wrap .hiscore ol li.no-data {
+      list-style: none;
+      text-align: center;
+      font-weight: normal;
+      color: #999;
+    }
+
+    .restart-button {
+      display: none;
+    }
+
+    .game-container .game-start {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(238, 228, 218, 0.5);
+      z-index: 100;
+      text-align: center;
+      -webkit-animation: fade-in 400ms ease 800ms;
+      -moz-animation: fade-in 400ms ease 800ms;
+      animation: fade-in 400ms ease 800ms;
+      -webkit-animation-fill-mode: both;
+      -moz-animation-fill-mode: both;
+      animation-fill-mode: both;
+    }
+
+    .game-container .game-start p {
+      font-size: 60px;
+      font-weight: bold;
+      height: 60px;
+      line-height: 60px;
+      margin-top: 222px;
+    }
+
+    .game-container .game-start p .name {
+      height: 40px;
+      width: 200px;
+      font-size: 16px;
+      border: none;
+      padding: 2px 5px;
+      background: #FFF;
+      border-radius: 3px;
+    }
+
+    .game-container .game-start p .new-button {
+      background: #8f7a66;
+      border-radius: 3px;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: #f9f6f2;
+      height: 40px;
+      line-height: 42px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    .above-game .player {
+      margin-left: 20px;
+      display: inline-block;
+      line-height: 24px;
+      height: 24px;
+      color: #fff;
+      font-size: 14px;
+      background-color: #A4B6F0;
+      padding: 5px;
+      border-radius: 3px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: top;
+      white-space: nowrap;
+      width: 125px;
+    }
+  </style>
+</body>
+</html>
