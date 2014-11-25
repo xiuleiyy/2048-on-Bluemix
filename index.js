@@ -21,8 +21,11 @@ var db_config = {
 };
 
 // read database config form VCAP_SERVICES env
+
 if (process.env.VCAP_SERVICES) {
-  var mysql_config = JSON.parse(process.env.VCAP_SERVICES).mysql-5.5[0].credentials;
+  var env = JSON.parse(process.env.VCAP_SERVICES)
+  
+  var mysql_config=env['mysql-5.5'][0]['credentials'];
   db_config.host = mysql_config.hostname;
   db_config.port = mysql_config.port;
   db_config.user = mysql_config.username;
