@@ -14,4 +14,7 @@ Steps by steps to run 2048 on Bluemix
 4. Click into app "app_name" and click "Add a Service" to add mysql service to this application. Click "OK" to re-stage app.
 5. Start app from Bluemix UI
 6. Access application with http://app_name.mybluemix.net
+7. Have a try with my deployment: http://2048-bluemix.mybluemix.net/ 
+
+
 
